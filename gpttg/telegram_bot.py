@@ -51,8 +51,30 @@ class ChatGPT3TelegramBot:
         """
         React to incoming messages and respond accordingly.
         """
-        pass
-        #  TODO: write code here
+        chat_id = update.effective_chat.id
+        if not await self.is_allowed(update):
+            logging.warning(f'User {update.message.from_user.name} is not allowed to use this bot')
+            await context.bot.send_message(
+                text=self.dissalowed_message,
+                chat_id=chat_id,
+                disable_web_page_preview=True,
+            )
+            return
+
+        logging.info(f'new message received from user {update.message.from_user.id}')
+        await context.bot.send_chat_action(chat_id=chat_id, action=constants.ChatAction.TYPING)
+        print("hello")
+
+        response = self.openai.get_chat_response(chat_id=chat_id, query=update.message.text)
+        logging.info("Response from ChatGPT received")
+
+        await context.bot.send_message(
+            text=response,
+            chat_id=chat_id,
+            reply_to_message_id=update.message.message_id,
+            parse_mode=constants.ParseMode.MARKDOWN,
+            disable_web_page_preview=True,
+        )
 
     async def error_handler(self, update: object, context: ContextTypes.DEFAULT_TYPE) -> None:
         """
@@ -64,8 +86,14 @@ class ChatGPT3TelegramBot:
         """
         Check user permissions for bot
         """
-        pass
-        #  TODO: write code here
+        if self.config["allowed_user_ids"] == "*":
+            return True
+        allowed_user_ids = self.config["allowed_user_ids"].split(",")
+
+        if  str(update.message.from_user.id) in allowed_user_ids:
+            return True
+
+        return False
 
     def run(self):
         """
