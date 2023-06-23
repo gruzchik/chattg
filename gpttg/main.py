@@ -2,9 +2,10 @@ import logging
 
 from openai_helper import OpenAIHelper
 from telegram_bot import ChatGPT3TelegramBot
+from chatsettings import *
 
-OPENAI_API_KEY = "Write here token Openapi"
-TELEGRAM_BOT_TOKEN = "Write here your TG token"
+OPENAI_API_KEY = OPENAI_API_KEY
+TELEGRAM_BOT_TOKEN = TELEGRAM_BOT_TOKEN
 ALLOWED_TELEGRAM_USER_IDS = "*"
 
 
