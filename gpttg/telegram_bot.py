@@ -54,16 +54,16 @@ class ChatGPT3TelegramBot:
         chat_id = update.effective_chat.id
         if not await self.is_allowed(update):
             logging.warning(f'User {update.message.from_user.name} is not allowed to use this bot')
-            await context.bot.send_message(
-                text=self.dissalowed_message,
-                chat_id=chat_id,
-                disable_web_page_preview=True,
-            )
+            # await context.bot.send_message(
+            #     text=self.disallowed_message,
+            #     chat_id=chat_id,
+            #     disable_web_page_preview=True,
+            # )
+            await self.send_disallowed_message(update, context)
             return
 
         logging.info(f'new message received from user {update.message.from_user.id}')
         await context.bot.send_chat_action(chat_id=chat_id, action=constants.ChatAction.TYPING)
-        print("hello")
 
         response = self.openai.get_chat_response(chat_id=chat_id, query=update.message.text)
         logging.info("Response from ChatGPT received")
@@ -75,7 +75,13 @@ class ChatGPT3TelegramBot:
             parse_mode=constants.ParseMode.MARKDOWN,
             disable_web_page_preview=True,
         )
-
+    async def send_disallowed_message(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
+        chat_id = update.effective_chat.id
+        await context.bot.send_message(
+            text=self.disallowed_message,
+            chat_id=chat_id,
+            disable_web_page_preview=True,
+        )
     async def error_handler(self, update: object, context: ContextTypes.DEFAULT_TYPE) -> None:
         """
         Catch all errors
