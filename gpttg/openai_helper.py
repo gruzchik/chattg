@@ -33,14 +33,14 @@ class OpenAIHelper:
 
             # Check a history size to avoid a active token usage
             if len(self.conversations[chat_id]) > self.config['max_history_size']:
-                logging.info('Chat history for chat ID %s is too long. Summarising...',chat_id)
+                logging.info("Chat history for chat ID %s is too long. Summarising...", chat_id)
                 try:
                     summary = self.__summarise(self.conversations[chat_id])
-                    logging.debug(f'Summary: {summary}')
+                    logging.debug("Summary: %s", summary)
                     self.reset_chat_history(chat_id)
                     self.__add_to_history(chat_id, role="assistant", content=summary)
                 except Exception as e:
-                    logging.warning(f'Error while summarising chat history: {str(e)}. Popping elements instead...')
+                    logging.warning("Error while summarising chat history: %s. Popping elements instead...", str(e))
                     self.conversations[chat_id] = self.conversations[chat_id][-self.config['max_history_size']:]
 
             self.__add_to_history(chat_id, role="user", content=query)
