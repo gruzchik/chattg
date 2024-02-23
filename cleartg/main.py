@@ -23,7 +23,9 @@ async def getinfo(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
 
 def run():
-    pass
+    """
+    Main functionality
+    """
     print("Application started")
     application = ApplicationBuilder().token(BOT_TOKEN).build()
 
