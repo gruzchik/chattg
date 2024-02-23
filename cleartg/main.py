@@ -5,6 +5,9 @@ from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler
 BOT_TOKEN = sys.argv[1]
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """
+    Start interaction with user
+    """
     print("Start function called")
     user = update.message.from_user
     print(user["first_name"])
@@ -12,6 +15,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await update.message.reply_text("Hello, welcome my bot!")
 
 async def getinfo(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """
+    Update info about user
+    """
     user = update.message.from_user
     await update.message.reply_text(str(user["id"])+":"+user["first_name"]+" "+user["last_name"])
 
