@@ -33,7 +33,7 @@ class OpenAIHelper:
 
             # Check a history size to avoid a active token usage
             if len(self.conversations[chat_id]) > self.config['max_history_size']:
-                logging.info(f'Chat history for chat ID {chat_id} is too long. Summarising...')
+                logging.info('Chat history for chat ID %s is too long. Summarising...',chat_id)
                 try:
                     summary = self.__summarise(self.conversations[chat_id])
                     logging.debug(f'Summary: {summary}')
